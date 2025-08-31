@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kuis Kemerdekaan – Naikkan Bendera (Fix)</title>
+  <title>Kuis Kemerdekaan – Naikkan Bendera</title>
   <style>
     :root{ --max-flag-raise:86; }
     *{box-sizing:border-box}
@@ -11,92 +11,25 @@
     header{ text-align:center; padding:14px 12px }
     h1{ margin:4px 0; font-size:clamp(18px,3.2vw,26px) }
 
-
-    .wrapper {
-      display: flex;
-      transition: transform 0.3s ease;
-    }
-
-    /* Sidebar */
-    .sidebar {
-      width: 250px;
-      height: 100vh;
-      background-color: #333;
-      color: white;
-      padding: 1em;
-      position: fixed;
-      top: 0;
-      left: -280px;
-      z-index: 1000;
-      transition: left 0.3s ease;
-      text-align: left;
-    }
-
-    .sidebar.open {
-      left: 0;
-    }
-
-    .sidebar h2 {
-      color: #fff;
-    }
-
-    .sidebar a {
-      display: block;
-      color: #ccc;
-      padding: 10px 0;
-      text-decoration: none;
-    }
-
-    .sidebar a:hover {
-      color: #fff;
-    }
-
-    /* Overlay (untuk HP) */
-    .overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.3);
-      z-index: 999;
-      display: none;
-    }
-
-    .overlay.active {
-      display: block;
-    }
-
-    .menu-btn {
-      position: fixed;
-      top: 1rem;
-      left: 1rem;
-      font-size: 24px;
-      cursor: pointer;
-      z-index: 1100;
-      background: #fff;
-      padding: 5px 10px;
-      border-radius: 5px;
-    }
+    .wrapper { display: flex; transition: transform 0.3s ease; }
+    .sidebar { width: 250px; height: 100vh; background-color: #333; color: white; padding: 1em; position: fixed; top: 0; left: -280px; z-index: 1000; transition: left 0.3s ease; text-align: left; }
+    .sidebar.open { left: 0; }
+    .sidebar h2 { color: #fff; }
+    .sidebar a { display: block; color: #ccc; padding: 10px 0; text-decoration: none; }
+    .sidebar a:hover { color: #fff; }
+    .overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.3); z-index: 999; display: none; }
+    .overlay.active { display: block; }
+    .menu-btn { position: fixed; top: 1rem; left: 1rem; font-size: 24px; cursor: pointer; z-index: 1100; background: #fff; padding: 5px 10px; border-radius: 5px; }
 
     .game{ display:flex; flex-direction:column; gap:12px; align-items:stretch; height:calc(100vh - 86px); }
-
-    /* STAGE */
     .stage{ flex:1; display:flex; justify-content:center; align-items:flex-end; padding:12px; }
     .pole-wrap{ position:relative; width:240px; max-width:85vw; height:86%; }
-
-    /* container that holds numbers, stick, and flag. keep relative */
     .pole{ position:relative; width:100%; height:100%; margin:0 auto; }
     .pole-stick{ position:absolute; left:52px; top:0; width:8px; height:100%; background:#333; border-radius:6px; }
-
-    /* numbers on left of the stick. column-reverse so appended 1..n shows bottom-to-top */
     .numbers{ position:absolute; left:0; top:8px; bottom:8px; width:48px; display:flex; flex-direction:column-reverse; justify-content:space-between; align-items:center; font-weight:700; color:#222; }
     .numbers div{ font-size:14px; }
-
-    /* flag positioned to the right of the stick, inside the pole so bottom percent is relative to pole */
     .flag{ position:absolute; left:72px; bottom:0; width:90px; height:auto; transition: bottom .6s cubic-bezier(.2,.8,.2,1); will-change:bottom, transform; }
 
-    /* QUIZ panel at bottom */
     .quiz{ background:#fff; border-top-left-radius:14px; border-top-right-radius:14px; padding:12px; box-shadow:0 -8px 30px rgba(16,24,40,.06); }
     .question{ text-align:center; font-size:1.05rem; margin-bottom:8px }
     .options{ display:flex; flex-direction:column; gap:8px; }
@@ -108,10 +41,8 @@
     .btn{ padding:10px 16px; border-radius:10px; border:none; cursor:pointer; font-weight:700 }
     .btn.primary{ background:#059669; color:#fff }
     .btn.secondary{ background:#1f2937; color:#fff }
-
     .result-msg{ text-align:center; margin-top:6px; font-weight:700 }
 
-    /* responsive */
     @media (max-width:600px){
       .pole-wrap{ width:200px }
       .flag{ width:68px; left:64px }
@@ -135,7 +66,7 @@
 
   <header>
     <h1>🎌 Kuis Kemerdekaan – Naikkan Bendera</h1>
-    <div class="sub">Jawab soal. Setiap jawaban <b>benar</b> menaikkan bendera setahap. (1 di bawah → naik ke atas)</div>
+    <div class="sub">Jawab soal. Setiap jawaban <b>benar</b> menaikkan bendera setahap.</div>
   </header>
 
   <main class="game">
@@ -144,7 +75,6 @@
         <div class="pole" id="pole">
           <div class="numbers" id="numbers"></div>
           <div class="pole-stick"></div>
-          <!-- flag berada di dalam .pole supaya posisi bottom (%) relatif terhadap tinggi pole -->
           <img id="flag" class="flag" src="flag.gif" alt="bendera">
         </div>
       </div>
@@ -154,7 +84,6 @@
       <div class="question" id="question">Memuat soal...</div>
       <div class="options opts" id="options"></div>
       <div class="result-msg" id="result"></div>
-
       <div class="footer-row">
         <button class="btn secondary" id="btnReset">↻ Mulai Ulang</button>
         <button class="btn primary" id="btnPlay" style="display:none">▶️ Putar Lagu Kemerdekaan</button>
@@ -165,16 +94,33 @@
   <audio id="lagu"><source src="lagu.mp3" type="audio/mpeg"></audio>
 
   <script>
-    // contoh soal
-    const questions = [
+    // semua soal (boleh 10 atau lebih)
+    const allQuestions = [
       { q: "Tanggal Proklamasi Kemerdekaan Indonesia adalah?", a:["17 Agustus 1945","20 Mei 1908","28 Oktober 1928"], k:0 },
       { q: "Siapa yang menjahit bendera Merah Putih?", a:["Fatmawati","Kartini","Cut Nyak Dien"], k:0 },
       { q: "Siapa wakil proklamator RI?", a:["Moh. Hatta","Sutan Sjahrir","Soepomo"], k:0 },
       { q: "Lagu kebangsaan Indonesia adalah?", a:["Indonesia Raya","Garuda Pancasila","Hari Merdeka"], k:0 },
-      { q: "Ibu kota Indonesia?", a:["Jakarta","Bandung","Surabaya"], k:0 }
+      { q: "Ibu kota Indonesia?", a:["Jakarta","Bandung","Surabaya"], k:0 },
+      { q: "Tanggal lahir Pancasila diperingati setiap?", a:["1 Juni","17 Agustus","20 Mei"], k:0 },
+      { q: "Siapa presiden pertama RI?", a:["Soekarno","Soeharto","Habibie"], k:0 },
+      { q: "BPUPKI dibentuk pada tahun?", a:["1945","1944","1942"], k:1 },
+      { q: "Pembacaan Proklamasi dilakukan di jalan?", a:["Pegangsaan Timur 56","Merdeka Barat","Diponegoro 21"], k:0 },
+      { q: "Siapa penulis teks proklamasi?", a:["Soekarno","Sutan Sjahrir","Soekarni"], k:0 }
     ];
 
-    const total = questions.length;
+    const QUIZ_COUNT = 5; // jumlah soal yang dimainkan
+
+    function getRandomQuestions(source, n) {
+      const copy = [...source];
+      for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy.slice(0, n);
+    }
+
+    let questions = getRandomQuestions(allQuestions, QUIZ_COUNT);
+    let total = questions.length;
     let idx = 0, benar = 0, skor = 0;
 
     const numbersBox = document.getElementById('numbers');
@@ -186,7 +132,6 @@
     const lagu = document.getElementById('lagu');
     const btnReset = document.getElementById('btnReset');
 
-    // buat angka di tiang (1..N) — kita append 1..N, dan CSS .numbers pake column-reverse
     function buildNumbers(){
       numbersBox.innerHTML = '';
       for(let i=1;i<=total;i++){
@@ -197,7 +142,6 @@
     }
 
     function setFlagByCorrect(){
-      // gunakan persen relatif terhadap tinggi pole. gunakan --max-flag-raise untuk batas atas (mencegah overflow)
       const pct = (benar / total) * parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--max-flag-raise'));
       flag.style.bottom = pct + '%';
     }
@@ -207,76 +151,70 @@
         questionEl.textContent = '🎉 Selamat! Bendera sudah di puncak!';
         optionsEl.innerHTML = '';
         resultEl.textContent = `Skor: ${benar}/${total}`;
-        // tampilkan tombol play lagu (manual play lebih reliable di mobile)
-        if(benar === total){
-          btnPlay.style.display = 'inline-block';
-        } else {
-          btnPlay.style.display = 'inline-block';
-        }
+        btnPlay.style.display = 'inline-block';
         return;
       }
 
       const s = questions[idx];
+      // acak opsi + tandai mana yang benar
+      let options = s.a.map((text, i) => ({ text, isCorrect: i === s.k }));
+      for (let i = options.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [options[i], options[j]] = [options[j], options[i]];
+      }
+
       questionEl.textContent = s.q;
       optionsEl.innerHTML = '';
       resultEl.textContent = '';
-      s.a.forEach((opt,i)=>{
+      options.forEach((opt) => {
         const b = document.createElement('button');
-        b.textContent = opt;
-        b.onclick = ()=> handleAnswer(i,b);
+        b.textContent = opt.text;
+        b.onclick = () => handleAnswer(opt.isCorrect, b, optionsEl);
         optionsEl.appendChild(b);
       });
     }
 
-    function handleAnswer(i, btn){
-      // disable all buttons
-      Array.from(optionsEl.children).forEach(x=> x.disabled = true);
+    function handleAnswer(isCorrect, btn, container){
+      Array.from(container.children).forEach(x=> x.disabled = true);
 
-      const correct = questions[idx].k;
-      if(i === correct){
+      if(isCorrect){
         btn.classList.add('right');
         benar++; skor += 10;
         resultEl.textContent = '✅ Benar! Bendera naik.';
         setFlagByCorrect();
       } else {
         btn.classList.add('wrong');
-        // tunjukkan kunci
-        const rightBtn = optionsEl.children[correct];
+        const rightBtn = Array.from(container.children).find(b => b.onclick.toString().includes("true"));
         if(rightBtn) rightBtn.classList.add('right');
         resultEl.textContent = '❌ Salah. Bendera tetap.';
       }
 
       idx++;
-      // auto lanjut setelah jeda singkat
       setTimeout(showQuestion, 700);
     }
 
-    btnPlay.addEventListener('click', ()=>{
-      lagu.play().catch(()=>{
-        // autoplay blocked — biarkan user tekan lagi
-      });
-    });
+    btnPlay.addEventListener('click', ()=>{ lagu.play(); });
     btnReset.addEventListener('click', ()=>{
-      idx = 0; benar = 0; skor = 0; flag.style.bottom = '0%'; buildNumbers(); showQuestion(); btnPlay.style.display='none'; resultEl.textContent='';
+      questions = getRandomQuestions(allQuestions, QUIZ_COUNT);
+      total = questions.length;
+      idx = 0; benar = 0; skor = 0;
+      flag.style.bottom = '0%';
+      buildNumbers(); showQuestion();
+      btnPlay.style.display='none'; resultEl.textContent='';
     });
 
-    // init
     buildNumbers();
     showQuestion();
-    // pastikan flag start di bawah
     flag.style.bottom = '0%';
   </script>
 
-<!-- menu -->
   <script>
     function toggleSidebar() {
       const sidebar = document.getElementById("sidebar");
       const overlay = document.getElementById("overlay");
-
       sidebar.classList.toggle("open");
       overlay.classList.toggle("active");
     }
-
-  </script>  
+  </script>
 </body>
 </html>
